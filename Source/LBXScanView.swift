@@ -327,7 +327,7 @@ open class LBXScanView: UIView {
         return sizeRetangle
     }
     
-    func deviceStartReadying(readyStr: String) {
+    func deviceStartReadying(readyStr: String? = nil) {
         let XRetangleLeft = viewStyle.xScanRetangleOffset
         let sizeRetangle = getRetangeSize()
 
@@ -336,9 +336,17 @@ open class LBXScanView: UIView {
 
         // 设备启动状态提示
         if activityView == nil {
+            
+            // 是否存在文字
+            let hasReadyStr = !(readyStr?.isEmpty ?? true)
+            var offsetX: CGFloat = 0
+            if hasReadyStr {
+                offsetX = -50
+            }
+            
             activityView = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 
-            activityView?.center = CGPoint(x: XRetangleLeft + sizeRetangle.width / 2 - 50, y: YMinRetangle + sizeRetangle.height / 2)
+            activityView?.center = CGPoint(x: XRetangleLeft + sizeRetangle.width / 2 + offsetX, y: YMinRetangle + sizeRetangle.height / 2)
             activityView?.style = UIActivityIndicatorView.Style.whiteLarge
 
             addSubview(activityView!)
@@ -370,6 +378,32 @@ open class LBXScanView: UIView {
         }
     }
 
+    /// 开始加载
+    func startLoading() {
+        if activityView == nil {
+            let XRetangleLeft = viewStyle.xScanRetangleOffset
+            let sizeRetangle = getRetangeSize()
+            
+            // 扫码区域Y轴最小坐标
+            let YMinRetangle = frame.size.height / 2.0 - sizeRetangle.height / 2.0 - viewStyle.centerUpOffset
+
+            activityView = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            activityView?.center = CGPoint(x: XRetangleLeft + sizeRetangle.width / 2, y: YMinRetangle + sizeRetangle.height / 2)
+            activityView?.style = UIActivityIndicatorView.Style.whiteLarge
+            addSubview(activityView!)
+        }
+        activityView?.startAnimating()
+    }
+
+    /// 结束加载
+    func stopLoading() {
+        activityView?.stopAnimating()
+        if activityView != nil {
+            activityView?.stopAnimating()
+            activityView?.removeFromSuperview()
+            activityView = nil
+        }
+    }
 }
 
 //MARK: - 公开方法

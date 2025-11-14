@@ -44,7 +44,7 @@ open class LBXScanViewController: UIViewController {
     public var isNeedCodeImage = false
 
     // 相机启动提示文字
-    public var readyString: String! = "loading"
+    public var readyString: String? = "loading"
 
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +122,15 @@ open class LBXScanViewController: UIViewController {
         qRScanView?.deviceStartReadying(readyStr: readyString)
     }
    
+    /// 开始加载
+    open func startLoading() {
+        qRScanView?.startLoading()
+    }
+
+    /// 停止加载
+    open func stopLoading() {
+        qRScanView?.stopLoading()
+    }
 
     /**
      处理扫码结果，如果是继承本控制器的，可以重写该方法,作出相应地处理，或者设置delegate作出相应处理
